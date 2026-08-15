@@ -1,3 +1,5 @@
+import argparse
+import logging
 import sys
 import json
 from pathlib import Path
@@ -22,10 +24,10 @@ class LogAnalyzer:
                         self.stats["ERROR"] += 1
 
         except FileNotFoundError:
-            print(f"Error: File '{self.file_path}' not found.", file=sys.stderr)
+            logging.error(f"Error: File '{self.file_path}' not found.")
             sys.exit(1)
         except PermissionError:
-            print(f"Error: Permission denied for '{self.file_path}'.", file=sys.stderr)
+            logging.error(f"Error: Permission denied for '{self.file_path}'.")
             sys.exit(1)
 
     def save_report(self, output_path: str):
@@ -36,7 +38,27 @@ class LogAnalyzer:
             json.dump(self.stats, file, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
-    analyzer = LogAnalyzer("test_log.log")
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s"
+    )
+
+    parser = argparse.ArgumentParser(description="Log Analyzer CLI")
+    parser.add_argument("--log", 
+                        type=str, 
+                        required=True, 
+                        help="path to the log-file")
+    parser.add_argument("--out", 
+                        type=str, 
+                        required=False, 
+                        default="report.json", 
+                        help="path to the report-file"
+                        )
+    args = parser.parse_args()
+
+    analyzer = LogAnalyzer(args.log)
     analyzer.analyze()
-    analyzer.save_report("report.json")
-    print("Report saved successfully!")
+    analyzer.save_report(args.out)
+
+    logging.info(f"Report successfully saved to {args.out}")
