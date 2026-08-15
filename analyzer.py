@@ -5,11 +5,11 @@ import json
 from pathlib import Path
 
 class LogAnalyzer:
-    def __init__(self, file_path: str):
+    def __init__(self, file_path: str) -> None:
         self.file_path = Path(file_path)
-        self.stats = {"INFO": 0, "WARNING": 0, "ERROR": 0}
+        self.stats: dict[str, int] = {"INFO": 0, "WARNING": 0, "ERROR": 0}
 
-    def analyze(self):
+    def analyze(self) -> None:
         """Reads the log file line by line and counts log levels."""
         try:
             # Using context manager to ensure the file is closed properly
@@ -30,7 +30,7 @@ class LogAnalyzer:
             logging.error(f"Error: Permission denied for '{self.file_path}'.")
             sys.exit(1)
 
-    def save_report(self, output_path: str):
+    def save_report(self, output_path: str) -> None:
         """Saves the log statistics to a JSON file."""
         # Using the parameter passed to the method, NOT a hardcoded string
         report_path = Path(output_path)
