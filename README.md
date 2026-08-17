@@ -31,3 +31,4 @@ To run unit tests and static type checking:
 mypy analyzer.py
 pytest
 ```
+
