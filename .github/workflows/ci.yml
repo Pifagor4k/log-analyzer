@@ -1,0 +1,33 @@
+name: CI Pipeline
+
+# Trigger the robot when someone pushes code or creates a Pull Request
+on: [push, pull_request]
+
+jobs:
+  # We are creating a job named "test"
+  test:
+    # The robot will run on a fresh Ubuntu virtual machine
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Download our code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Install Python 3.11
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Step 3: Install testing tools from our dev requirements
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      # Step 4: Run static type checker
+      - name: Run MyPy
+        run: mypy analyzer.py
+
+      # Step 5: Run unit tests
+      - name: Run Pytest
+        run: pytest
