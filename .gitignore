@@ -6,3 +6,8 @@ __pycache__/
 # Files
 *.log
 *.json
+*.gz
+
+
+.coverage
+.coverage.*
