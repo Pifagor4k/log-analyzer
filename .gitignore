@@ -8,6 +8,10 @@ __pycache__/
 *.json
 *.gz
 
+<<<<<<< HEAD
 
 .coverage
 .coverage.*
+=======
+.coverage
+>>>>>>> 3c89571 (docs: update README with v2 architecture and advanced features)
