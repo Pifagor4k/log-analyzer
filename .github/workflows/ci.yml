@@ -22,12 +22,14 @@ jobs:
 
       # Step 3: Install testing tools from our dev requirements
       - name: Install dependencies
-        run: pip install -r requirements-dev.txt
+        run: | 
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
 
       # Step 4: Run static type checker
       - name: Run MyPy
         run: mypy analyzer.py
 
       # Step 5: Run unit tests
-      - name: Run Pytest
-        run: pytest
+      - name: Run Pytest with Coverage
+        run: pytest --cov=src test_analyzer.py
