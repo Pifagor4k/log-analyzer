@@ -5,6 +5,7 @@ from collections import Counter
 
 from src.analyzer.reader import LogReader
 from src.analyzer.parser import LogParser
+from src.analyzer.base_parser import ParserProtocol
 
 
 class LogAnalyzer:
@@ -28,7 +29,7 @@ class LogAnalyzer:
         return mod_message
 
 
-    def process(self, reader: LogReader, parser: LogParser, follow: bool = False) -> Generator[None, None, None]:
+    def process(self, reader: LogReader, parser: ParserProtocol, follow: bool = False) -> Generator[None, None, None]:
         """Processes logs using the injected reader and parser."""
         for line in reader.read_lines(follow=follow):
             entry = parser.parse_line(line)

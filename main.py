@@ -10,6 +10,7 @@ from rich.live import Live
 from src.analyzer.reader import LogReader
 from src.analyzer.parser import LogParser
 from src.analyzer.core import LogAnalyzer
+from src.analyzer.hybrid_parser import HybridParser
 
 
 def save_report(stats: dict, output_path: str) -> None:
@@ -29,7 +30,7 @@ def generate_table(stats: dict) -> Table:
     table.add_column("Count", justify="right", style="green")
 
     for level, counter in stats.items():
-        mc_messages = counter.most_common(3)
+        mc_messages = counter.most_common(5)
 
         for message, count in mc_messages:
             table.add_row(level, message, str(count))
@@ -63,7 +64,7 @@ if __name__ == "__main__":
 
 
     reader = LogReader(args.log)
-    parser_obj = LogParser()
+    parser_obj = HybridParser()
     analyzer = LogAnalyzer()
 
 
