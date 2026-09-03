@@ -1,8 +1,35 @@
 import pytest
 
+from unittest.mock import MagicMock
+
 from src.analyzer.reader import LogReader
-from src.analyzer.parser import LogParser
+from src.analyzer.parser import LogParser, LogEntry
+from src.analyzer.hybrid_parser import HybridParser
 from src.analyzer.core import LogAnalyzer
+
+
+# === Testing Hybrid Parser ===
+
+def test_hybrid_parser_fallback():
+    """
+    Test that HybridParser falls back to AI agent when Regex fails,
+    using a mocked AI classifier to keep tests fast and independent.
+    """
+    hybrid = HybridParser()
+    
+    # Mock the ai_parser's parse_line method so it doesn't load the heavy model
+    hybrid.ai_parser.parse_line = MagicMock(return_value=LogEntry(level="ERROR", message="[AI-Parsed] Mocked error"))
+    
+    # 1. Test standard log (should be handled by Regex, AI should NOT be called)
+    entry_regex = hybrid.parse_line("2026-08-18 10:00:00 [ERROR] Standard disk full")
+    assert entry_regex is not None
+    assert entry_regex.level == "ERROR"
+    
+    # 2. Test unstructured log (Regex fails, should trigger AI fallback)
+    entry_ai = hybrid.parse_line("RANDOM CRITICAL SYSTEM FAILURE")
+    assert entry_ai is not None
+    assert entry_ai.level == "ERROR"
+    assert "[AI-Parsed]" in entry_ai.message
 
 
 # === Testing Reader ===
