@@ -1,11 +1,11 @@
-# 📊 Advanced Log Analyzer CLI & Real-Time Monitor
+# 📊 Advanced AI-Powered Log Analyzer CLI & Real-Time Monitor
 
-A robust, enterprise-grade Command Line Interface (CLI) utility for parsing, analyzing, and monitoring application log files in real-time. Built with Python using modern architectural patterns (Dependency Injection, Data Classes, Generators), static typing, unit testing with high coverage, and automated CI/CD pipelines.
+A robust, enterprise-grade Command Line Interface (CLI) utility for parsing, analyzing, and monitoring application log files in real-time. Built with Python using modern architectural patterns (Dependency Injection, Strategy Pattern, Data Classes, Generators), static typing, AI fallbacks, unit testing with coverage, and automated CI/CD pipelines.
 
 ## 🚀 Key Features
-- **Modular Architecture:** Clean separation of concerns (`Reader`, `Parser`, `Analyzer`).
+- **Hybrid AI Parsing (Strategy Pattern):** Combines ultra-fast Regex parsing for structured logs with an **AI-powered Fallback Agent (Hugging Face Transformers)** using Zero-Shot Classification to seamlessly parse unknown or unstructured log formats.
+- **Modular Architecture:** Clean separation of concerns (`Reader`, `Parser`, `HybridParser`, `Analyzer`).
 - **Memory Efficient:** Uses Python Generators (`yield`) to process massive files (e.g., 50GB+) line-by-line with constant RAM usage.
-- **Advanced Parsing:** Utilizes Regular Expressions (Regex) with named capture groups to extract data securely.
 - **On-the-Fly Decompression:** Transparently reads `.gz` compressed log archives without extracting them to disk.
 - **Data Masking (Anonymization):** Automatically masks sensitive dynamic data (like IPv4 addresses) using `re.sub` to accurately group similar error messages via `collections.Counter`.
 - **Real-Time Streaming (`tail -f` mode):** Supports `--follow` flag to monitor log file growth in real-time.
@@ -15,6 +15,7 @@ A robust, enterprise-grade Command Line Interface (CLI) utility for parsing, ana
 
 ## 🛠️ Tech Stack
 - **Language:** Python 3.11+
+- **AI / Machine Learning:** Hugging Face `transformers`, PyTorch (`torch`)
 - **Core Modules:** `pathlib`, `re`, `gzip`, `collections`, `dataclasses`, `argparse`, `logging`
 - **UI & Formatting:** `rich`
 - **Testing & Quality:** `pytest`, `pytest-cov`, `mypy`
@@ -35,7 +36,7 @@ A robust, enterprise-grade Command Line Interface (CLI) utility for parsing, ana
    python3 -m venv venv
    source venv/bin/activate
    ```
-3. Install development dependencies:
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    pip install -r requirements-dev.txt
@@ -70,7 +71,7 @@ To ensure code health, run the static type checker and unit tests with coverage:
 
 ```bash
 # Check types
-mypy main.py src/
+mypy .
 
 # Run tests with coverage report
 pytest --cov=src test_analyzer.py
